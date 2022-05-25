@@ -28,7 +28,7 @@ output "region" {
   value       = var.region
 }
 
-output "cluster_name" {
+output "name" {
   description = "Kubernetes Cluster Name"
-  value       = local.cluster_name
+  value       = local.unique_name
 }
