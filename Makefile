@@ -8,8 +8,13 @@ SHELL=/bin/bash -o pipefail
 
 check-dependency = $(if $(shell command -v $(1)),,$(error Make sure $(1) is installed))
 
-cluster:
-	@terraform plan
+plan: ## Create a terraform `plan` file for creating the EKS cluster
+	@terraform plan -out plan
+
+cluster: cluster-plan ## Create the EKS cluster as defined in the `plan` file
+	@terraform apply plan
+
+configuration: ## Configure kubectl
 	@aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
 
 help:
